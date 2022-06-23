@@ -13,8 +13,30 @@ import App from './components/App/App'
 // -Plugin the middleware
 // -kickoff the sagas, watch for action types
 
+
+function* fetchFavorite (action){
+  console.log('made it to fetch favorites', action);
+  const res= yield axios.get('/api/favorite');
+  console.log('res.data', res.data);
+  yield put({
+    type: 'SET_FAVORITE', 
+    payload: res.data
+  });
+}
+
+// favoriteslist reducer 
+const favoriteList= (state =[], action) =>{
+  if(action.type === 'SET_FAVORITE'){
+    return action.payload
+  }
+  return state;
+}
+
+
+
 function* watcherSaga() {
   // yield takeEvery ('SOME_ACTION', someFunction)
+  yield takeEvery('FETCH_FAVORITE', fetchFavorite);
 }
 
 // reducer that holds our results
@@ -29,7 +51,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   combineReducers({ 
-    random
+    random, 
+    favoriteList
    }),
   applyMiddleware(sagaMiddleware)
 );
