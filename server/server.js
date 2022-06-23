@@ -23,8 +23,6 @@ app.use('/api/category', categoryRouter);
 app.use('/api/search', searchRouter);
 
 
-
-
 // Listen
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);

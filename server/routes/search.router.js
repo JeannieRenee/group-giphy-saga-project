@@ -13,7 +13,6 @@ router.get('/:search', (req,res)=>{
         console.log('error in giphy', response.data);
         res.sendStatus(500);
     })
-
 })
 
 module.exports = router;
