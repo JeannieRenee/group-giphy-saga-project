@@ -17,11 +17,19 @@ function* watcherSaga() {
   // yield takeEvery ('SOME_ACTION', someFunction)
 }
 
+// reducer that holds our results
+const random = (state = {}, action) => {
+    if(action.type === 'SET_RANDOM') {
+        return action.payload;
+    }
+    return state;
+}
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   combineReducers({ 
-
+    random
    }),
   applyMiddleware(sagaMiddleware)
 );
