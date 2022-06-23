@@ -1,5 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App/App';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import logger from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
+import { takeEvery, put } from 'redux-saga/effects';
+import App from './components/App/App'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+
+//setup steps
+// -Import the library
+// -Plugin the middleware
+// -kickoff the sagas, watch for action types
+
+function* watcherSaga() {
+  // yield takeEvery ('SOME_ACTION', someFunction)
+}
+
+// reducer that holds our results
+const random = (state = {}, action) => {
+    if(action.type === 'SET_RANDOM') {
+        return action.payload;
+    }
+    return state;
+}
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+  combineReducers({ 
+    random
+   }),
+  applyMiddleware(sagaMiddleware)
+);
+
+sagaMiddleware.run(watcherSaga)
+
+ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
