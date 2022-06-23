@@ -36,7 +36,7 @@ const favoriteList= (state =[], action) =>{
 
 function* watcherSaga() {
   // yield takeEvery ('SOME_ACTION', someFunction)
-
+  yield takeEvery('FETCH_FAVORITE', fetchFavorite);
   yield takeEvery('FETCH_RESULTS', fetchResults);
 };
 
@@ -46,9 +46,6 @@ const results = (state = {}, action) => {
       return action.payload;
   }
   return state;
-
-  yield takeEvery('FETCH_FAVORITE', fetchFavorite);
-
 }
 
 // saga function for search
@@ -74,12 +71,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   combineReducers({ 
-
-    results
-
-    random, 
+    results, 
     favoriteList
-
    }),
   applyMiddleware(sagaMiddleware)
 );
