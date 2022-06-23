@@ -36,23 +36,50 @@ const favoriteList= (state =[], action) =>{
 
 function* watcherSaga() {
   // yield takeEvery ('SOME_ACTION', someFunction)
+
+  yield takeEvery('FETCH_RESULTS', fetchResults);
+};
+
+// Reducer that holds our results
+const results = (state = {}, action) => {
+  if(action.type === 'SET_RESULTS') {
+      return action.payload;
+  }
+  return state;
+
   yield takeEvery('FETCH_FAVORITE', fetchFavorite);
+
 }
 
-// reducer that holds our results
-const random = (state = {}, action) => {
-    if(action.type === 'SET_RANDOM') {
-        return action.payload;
-    }
-    return state;
+// saga function for search
+function* fetchResults(action) {
+  console.log('made it to fetchResults!', action);
+  let res;
+  try {
+      res = yield axios.get('/api/plant');
+      console.log('res.data', res.data);
+  }
+  catch (err) {
+      console.error('oh no', err);
+      return;
+  }
+  // put means dispatch();
+  yield put({
+      type: 'SET_PLANTS',
+      payload: res.data
+  });
 }
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   combineReducers({ 
+
+    results
+
     random, 
     favoriteList
+
    }),
   applyMiddleware(sagaMiddleware)
 );
