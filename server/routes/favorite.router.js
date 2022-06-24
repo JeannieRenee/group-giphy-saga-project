@@ -16,15 +16,28 @@ router.get('/', (req, res) => {
 });
 // add a new favorite
 router.post('/', (req, res) => {
+  const gif = req.body;
+  console.log('in /api/favorite POST', req.body);
+  const queryText = `INSERT INTO "favorite" ("fav_id")
+  VALUES ($1);
+  `;
+
+  const queryValues = [
+    gif.gif
+  ];
+  
+  pool.query(queryText, queryValues)
+  .then(()=> { res.sendStatus(200); })
+  .catch((err) => {
+    console.log('error posting gif to database', err);
+    res.sendStatus(500);
+  })
+
   res.sendStatus(200);
 });
-// add a new favorite
-// router.post('/', (req, res) => {
-//   const newFavorite= req.body 
-//   console.log('in the req body', newFavorite);
-//   const sqlQuery= `INSERT INTO "favorite"`
-//   res.sendStatus(200);
-// });
+
+
+
 
 // update given favorite with a category id
 router.put('/:favId', (req, res) => {

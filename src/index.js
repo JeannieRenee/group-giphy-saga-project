@@ -32,12 +32,25 @@ const favoriteList= (state =[], action) =>{
   return state;
 }
 
+function* addFavorite(action) {
+  console.log('in add favorites', action)
+  const response = yield axios({
+    method: 'POST',
+    url: '/api/favorite',
+    data: {gif:action.payload}
+  })
+  console.log(response);
+  yield put({
+    type: 'FETCH_FAVORITE'
+  })
+}
 
 
 function* watcherSaga() {
   // yield takeEvery ('SOME_ACTION', someFunction)
   yield takeEvery('FETCH_FAVORITE', fetchFavorite);
   yield takeEvery('FETCH_RESULTS', fetchResults);
+  yield takeEvery('ADD_RESULTS', addFavorite);
 };
 
 // Reducer that holds our results
