@@ -18,8 +18,16 @@ function Search() {
             });
         
           setSearch('');
-          history.push('/Favorite')
+          // history.push('/favorite')
+
       }
+const handleFavorite =()=>{
+  dispatch({
+    type: 'SET_FAVORITE',
+    payload: searchResult
+  })
+  history.push('/Favorite');
+}
   return (
     <div>
     <div>
@@ -37,7 +45,7 @@ function Search() {
     </div>
     
     <div>
-    <button>Star</button>
+    <button onClick={handleFavorite}>Star</button>
       <img src={searchResult.data && searchResult.data[0].images.original.url}/>
     </div>
     </div>
