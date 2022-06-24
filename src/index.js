@@ -8,20 +8,10 @@ import { takeEvery, put } from 'redux-saga/effects';
 import App from './components/App/App'
 import axios from 'axios';
 
-
 //setup steps
 // -Import the library
 // -Plugin the middleware
 // -kickoff the sagas, watch for action types
-
-// favoriteslist reducer 
-const favoriteList= (state =[], action) =>{
-  if(action.type === 'SET_FAVORITE'){
-    return action.payload
-  }
-  return state;
-}
-
 
 function* fetchFavorite (action){
   console.log('made it to fetch favorites', action);
@@ -55,12 +45,7 @@ function* addFavorite(action) {
 }
 
 
-function* watcherSaga() {
-  // yield takeEvery ('SOME_ACTION', someFunction)
-  yield takeEvery('FETCH_FAVORITE', fetchFavorite);
-  yield takeEvery('FETCH_RESULTS', fetchResults);
-  yield takeEvery('ADD_RESULTS', addFavorite);
-};
+
 
 // Reducer that holds our results
 const results = (state = {}, action) => {
@@ -75,7 +60,7 @@ function* fetchResults(action) {
   console.log('made it to fetchResults!', action);
   let res;
   try {
-      res = yield axios.get('/api/:search');
+      res = yield axios.get(`/api/:search/${action.payload}`);
       console.log('res.data', res.data);
   }
   catch (err) {
@@ -89,12 +74,13 @@ function* fetchResults(action) {
   });
 }
 
-
 function* watcherSaga() {
   // yield takeEvery ('SOME_ACTION', someFunction)
   yield takeEvery('FETCH_FAVORITE', fetchFavorite);
   yield takeEvery('FETCH_RESULTS', fetchResults);
+  yield takeEvery('ADD_RESULTS', addFavorite);
 };
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
