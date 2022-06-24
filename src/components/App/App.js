@@ -13,12 +13,15 @@ function App(props) {
     <div>
       <h1>Giphy Search!</h1>
 
-      <Search />
+      
 
       <Router>
-        <Route>
+        <Route exact path= '/Favorite'>
         <Favorite />
         </Route>
+    <Search />
+  
+        
       </Router>
 
     </div>

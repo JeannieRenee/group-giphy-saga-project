@@ -78,7 +78,7 @@ function* watcherSaga() {
   // yield takeEvery ('SOME_ACTION', someFunction)
   yield takeEvery('FETCH_FAVORITE', fetchFavorite);
   yield takeEvery('FETCH_RESULTS', fetchResults);
-  yield takeEvery('ADD_RESULTS', addFavorite);
+  yield takeEvery('ADD_FAVORITE', addFavorite);
 };
 
 const sagaMiddleware = createSagaMiddleware();
