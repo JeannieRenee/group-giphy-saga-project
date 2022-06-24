@@ -6,12 +6,21 @@ import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import { takeEvery, put } from 'redux-saga/effects';
 import App from './components/App/App'
+import axios from 'axios';
 
 
 //setup steps
 // -Import the library
 // -Plugin the middleware
 // -kickoff the sagas, watch for action types
+
+// favoriteslist reducer 
+const favoriteList= (state =[], action) =>{
+  if(action.type === 'SET_FAVORITE'){
+    return action.payload
+  }
+  return state;
+}
 
 
 function* fetchFavorite (action){
@@ -24,25 +33,11 @@ function* fetchFavorite (action){
   });
 }
 
-// favoriteslist reducer 
-const favoriteList= (state =[], action) =>{
-  if(action.type === 'SET_FAVORITE'){
-    return action.payload
-  }
-  return state;
-}
 
-
-
-function* watcherSaga() {
-  // yield takeEvery ('SOME_ACTION', someFunction)
-  yield takeEvery('FETCH_FAVORITE', fetchFavorite);
-  yield takeEvery('FETCH_RESULTS', fetchResults);
-};
 
 // Reducer that holds our results
 const results = (state = {}, action) => {
-  if(action.type === 'SET_RESULTS') {
+  if(action.type === 'SET_SEARCH') {
       return action.payload;
   }
   return state;
@@ -53,7 +48,7 @@ function* fetchResults(action) {
   console.log('made it to fetchResults!', action);
   let res;
   try {
-      res = yield axios.get('/api/plant');
+      res = yield axios.get('/api/:search');
       console.log('res.data', res.data);
   }
   catch (err) {
@@ -62,11 +57,17 @@ function* fetchResults(action) {
   }
   // put means dispatch();
   yield put({
-      type: 'SET_PLANTS',
+      type: 'SET_SEARCH',
       payload: res.data
   });
 }
 
+
+function* watcherSaga() {
+  // yield takeEvery ('SOME_ACTION', someFunction)
+  yield takeEvery('FETCH_FAVORITE', fetchFavorite);
+  yield takeEvery('FETCH_RESULTS', fetchResults);
+};
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
@@ -74,7 +75,7 @@ const store = createStore(
     results, 
     favoriteList
    }),
-  applyMiddleware(sagaMiddleware)
+  applyMiddleware(sagaMiddleware, logger)
 );
 
 sagaMiddleware.run(watcherSaga)

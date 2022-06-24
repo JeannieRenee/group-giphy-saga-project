@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+
 import {useDispatch} from 'react-redux';
 import {useState} from 'react'
 
@@ -9,7 +9,7 @@ function Search() {
 
     const getGif = () => {
             dispatch({
-              type: "SET_RESULTS",
+              type: "FETCH_RESULTS",
               payload: search,
             });
         
