@@ -17,5 +17,5 @@ VALUES ('funny'), ('cohort'), ('cartoon'), ('nsfw'), ('meme');
 CREATE TABLE "favorite" (
     "id" SERIAL PRIMARY KEY,
     "fav_id" VARCHAR NOT NULL,
-    "cat_id" INTEGER 
+    "category_id" INTEGER 
 );

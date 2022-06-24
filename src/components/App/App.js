@@ -16,9 +16,10 @@ function App(props) {
       <Search />
 
       <Router>
-        <Route>
+        <Route exact path= '/Favorite'>
         <Favorite />
         </Route>
+        
       </Router>
 
     </div>

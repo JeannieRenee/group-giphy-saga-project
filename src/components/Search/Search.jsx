@@ -1,9 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {useDispatch} from 'react-redux';
-import {useState} from 'react'
+import {useState} from 'react';
+import {useHistory} from 'react-router-dom'
 
 function Search() {
+  const history = useHistory();
   const searchResult = useSelector(store => store.results);
   console.log(">>>>>>>>>>>>>>", searchResult);
   const [search, setSearch]= useState('');
@@ -16,6 +18,7 @@ function Search() {
             });
         
           setSearch('');
+          history.push('/Favorite')
       }
   return (
     <div>
@@ -27,10 +30,14 @@ function Search() {
         value= {search}
         onChange={(evt) => setSearch(evt.target.value)}
         />
-        <button> search</button>
+        <button>search</button>
       </form>
+ 
+
     </div>
+    
     <div>
+    <button>Star</button>
       <img src={searchResult.data && searchResult.data[0].images.original.url}/>
     </div>
     </div>
