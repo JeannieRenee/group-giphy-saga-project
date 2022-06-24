@@ -1,29 +1,34 @@
 import React from 'react';
 import axios from 'axios';
+import {useDispatch} from 'react-redux';
+import {useState} from 'react'
 
 function Search() {
+  const [search, setSearch]= useState('');
+  const dispatch= useDispatch();
 
     const getGif = () => {
-        axios.get('/:search')
-          .then((response) => {
-            console.log("GET", response);
             dispatch({
               type: "SET_RESULTS",
-              payload: response.data,
+              payload: search,
             });
-          }).catch((error) => {
-            console.log("Error getting gifs", error);
-          });
+        
+          setSearch('');
       }
   return (
     <div>
-      <input type='text'></input>
-      <button onClick={getGif}>search</button>
-
-      <div className='results'>
+      <form onSubmit={getGif}>
+      <input 
+      type="text"
+      placeholder= "Search"
+      value= {search}
+      onChange={(evt) => setSearch(evt.target.value)}
+/>
+    <button onClick={getGif}> search</button>
+  </form>
 
       </div>
-    </div>
+   
   );
 }
 
